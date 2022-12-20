@@ -24,7 +24,6 @@ modules:
           srv-url: ${default-url}
     requires:
       - name: cap-book-orders-app-db
-      - name: cap-book-orders-app-auth
 
   - name: cap-book-orders-app-db-deployer
     type: hdb
@@ -33,7 +32,6 @@ modules:
       buildpack: nodejs_buildpack
     requires:
       - name: cap-book-orders-app-db
-      - name: cap-book-orders-app-auth
 
 resources:
   - name: cap-book-orders-app-db
