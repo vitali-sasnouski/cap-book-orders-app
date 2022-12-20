@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="4.0" xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx">
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
+        <edmx:Include Alias="Common" Namespace="com.sap.vocabularies.Common.v1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://oasis-tcs.github.io/odata-vocabularies/vocabularies/Org.OData.Core.V1.xml">
+        <edmx:Include Alias="Core" Namespace="Org.OData.Core.V1"/>
+    </edmx:Reference>
+    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
+        <edmx:Include Alias="UI" Namespace="com.sap.vocabularies.UI.v1"/>
+    </edmx:Reference>
+    <edmx:DataServices>
+        <Schema Namespace="OrderBookService" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+            <EntityContainer Name="EntityContainer">
+                <EntitySet Name="BookOrders" EntityType="OrderBookService.BookOrders">
+                    <NavigationPropertyBinding Path="CurrencyCode" Target="Currencies"/>
+                    <NavigationPropertyBinding Path="LocalCurrencyCode" Target="Currencies"/>
+                    <NavigationPropertyBinding Path="status" Target="Statuses"/>
+                </EntitySet>
+                <EntitySet Name="Statuses" EntityType="OrderBookService.Statuses"/>
+                <EntitySet Name="Currencies" EntityType="OrderBookService.Currencies">
+                    <NavigationPropertyBinding Path="texts" Target="Currencies_texts"/>
+                    <NavigationPropertyBinding Path="localized" Target="Currencies_texts"/>
+                </EntitySet>
+                <EntitySet Name="Currencies_texts" EntityType="OrderBookService.Currencies_texts"/>
+            </EntityContainer>
+            <EntityType Name="BookOrders">
+                <Key>
+                    <PropertyRef Name="orderUUID"/>
+                </Key>
+                <Property Name="createdAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="createdBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="modifiedAt" Type="Edm.DateTimeOffset" Precision="7"/>
+                <Property Name="modifiedBy" Type="Edm.String" MaxLength="255"/>
+                <Property Name="orderUUID" Type="Edm.Guid" Nullable="false"/>
+                <Property Name="bookUUID" Type="Edm.Guid"/>
+                <Property Name="bookOrderID" Type="Edm.Int32"/>
+                <Property Name="bookName" Type="Edm.String" MaxLength="60"/>
+                <Property Name="authorUUID" Type="Edm.Guid"/>
+                <Property Name="authorfirstName" Type="Edm.String" MaxLength="15"/>
+                <Property Name="authorlastName" Type="Edm.String" MaxLength="15"/>
+                <NavigationProperty Name="CurrencyCode" Type="OrderBookService.Currencies">
+                    <ReferentialConstraint Property="CurrencyCode_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="CurrencyCode_code" Type="Edm.String" MaxLength="3"/>
+                <NavigationProperty Name="LocalCurrencyCode" Type="OrderBookService.Currencies">
+                    <ReferentialConstraint Property="LocalCurrencyCode_code" ReferencedProperty="code"/>
+                </NavigationProperty>
+                <Property Name="LocalCurrencyCode_code" Type="Edm.String" MaxLength="3"/>
+                <Property Name="price" Type="Edm.Decimal" Scale="2" Precision="15"/>
+                <Property Name="quantity" Type="Edm.Int32"/>
+                <NavigationProperty Name="status" Type="OrderBookService.Statuses">
+                    <ReferentialConstraint Property="status_ID" ReferencedProperty="ID"/>
+                </NavigationProperty>
+                <Property Name="status_ID" Type="Edm.String"/>
+                <Property Name="totalPrice" Type="Edm.Decimal" Scale="2" Precision="15"/>
+                <Property Name="totalLocal" Type="Edm.Decimal" Scale="2" Precision="15"/>
+            </EntityType>
+            <EntityType Name="Statuses">
+                <Key>
+                    <PropertyRef Name="ID"/>
+                </Key>
+                <Property Name="ID" Type="Edm.String" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="20"/>
+                <Property Name="criticality" Type="Edm.Int32"/>
+            </EntityType>
+            <EntityType Name="Currencies">
+                <Key>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+                <Property Name="symbol" Type="Edm.String" MaxLength="5"/>
+                <Property Name="numcode" Type="Edm.Int32"/>
+                <Property Name="exponent" Type="Edm.Int32"/>
+                <Property Name="minor" Type="Edm.String"/>
+                <NavigationProperty Name="texts" Type="Collection(OrderBookService.Currencies_texts)">
+                    <OnDelete Action="Cascade"/>
+                </NavigationProperty>
+                <NavigationProperty Name="localized" Type="OrderBookService.Currencies_texts">
+                    <ReferentialConstraint Property="code" ReferencedProperty="code"/>
+                </NavigationProperty>
+            </EntityType>
+            <EntityType Name="Currencies_texts">
+                <Key>
+                    <PropertyRef Name="locale"/>
+                    <PropertyRef Name="code"/>
+                </Key>
+                <Property Name="locale" Type="Edm.String" MaxLength="14" Nullable="false"/>
+                <Property Name="name" Type="Edm.String" MaxLength="255"/>
+                <Property Name="descr" Type="Edm.String" MaxLength="1000"/>
+                <Property Name="code" Type="Edm.String" MaxLength="3" Nullable="false"/>
+            </EntityType>
+            <Action Name="sendBook" IsBound="true">
+                <Parameter Name="in" Type="OrderBookService.BookOrders"/>
+            </Action>
+            <Action Name="approveBook" IsBound="true">
+                <Parameter Name="in" Type="OrderBookService.BookOrders"/>
+            </Action>
+            <Annotations Target="OrderBookService.BookOrders/createdAt">
+                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                <Annotation Term="Core.Immutable" Bool="true"/>
+                <Annotation Term="Core.Computed" Bool="true"/>
+                <Annotation Term="Common.Label" String="{i18n>CreatedAt}"/>
+                </Annotations>
+                <Annotations Target="OrderBookService.BookOrders/createdBy">
+                    <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                    <Annotation Term="Core.Immutable" Bool="true"/>
+                    <Annotation Term="Core.Computed" Bool="true"/>
+                    <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                        <Annotation Term="Common.Label" String="{i18n>CreatedBy}"/>
+                        </Annotations>
+                        <Annotations Target="OrderBookService.BookOrders/modifiedAt">
+                            <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                            <Annotation Term="Core.Computed" Bool="true"/>
+                            <Annotation Term="Common.Label" String="{i18n>ChangedAt}"/>
+                            </Annotations>
+                            <Annotations Target="OrderBookService.BookOrders/modifiedBy">
+                                <Annotation Term="UI.HiddenFilter" Bool="true"/>
+                                <Annotation Term="Core.Computed" Bool="true"/>
+                                <Annotation Term="Core.Description" String="{i18n>UserID.Description}"/>
+                                    <Annotation Term="Common.Label" String="{i18n>ChangedBy}"/>
+                                    </Annotations>
+                                    <Annotations Target="OrderBookService.BookOrders/CurrencyCode">
+                                        <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                            <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                            </Annotations>
+                                            <Annotations Target="OrderBookService.BookOrders/CurrencyCode_code">
+                                                <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                    <Annotation Term="Common.ValueList">
+                                                        <Record Type="Common.ValueListType">
+                                                            <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                <PropertyValue Property="Parameters">
+                                                                    <Collection>
+                                                                        <Record Type="Common.ValueListParameterInOut">
+                                                                            <PropertyValue Property="LocalDataProperty" PropertyPath="CurrencyCode_code"/>
+                                                                            <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                        </Record>
+                                                                        <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                            <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                        </Record>
+                                                                    </Collection>
+                                                                </PropertyValue>
+                                                            </Record>
+                                                        </Annotation>
+                                                        <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                        </Annotations>
+                                                        <Annotations Target="OrderBookService.BookOrders/LocalCurrencyCode">
+                                                            <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                </Annotations>
+                                                                <Annotations Target="OrderBookService.BookOrders/LocalCurrencyCode_code">
+                                                                    <Annotation Term="Common.Label" String="{i18n>Currency}"/>
+                                                                        <Annotation Term="Common.ValueList">
+                                                                            <Record Type="Common.ValueListType">
+                                                                                <PropertyValue Property="Label" String="{i18n>Currency}"/>
+                                                                                    <PropertyValue Property="CollectionPath" String="Currencies"/>
+                                                                                    <PropertyValue Property="Parameters">
+                                                                                        <Collection>
+                                                                                            <Record Type="Common.ValueListParameterInOut">
+                                                                                                <PropertyValue Property="LocalDataProperty" PropertyPath="LocalCurrencyCode_code"/>
+                                                                                                <PropertyValue Property="ValueListProperty" String="code"/>
+                                                                                            </Record>
+                                                                                            <Record Type="Common.ValueListParameterDisplayOnly">
+                                                                                                <PropertyValue Property="ValueListProperty" String="name"/>
+                                                                                            </Record>
+                                                                                        </Collection>
+                                                                                    </PropertyValue>
+                                                                                </Record>
+                                                                            </Annotation>
+                                                                            <Annotation Term="Core.Description" String="{i18n>CurrencyCode.Description}"/>
+                                                                            </Annotations>
+                                                                            <Annotations Target="OrderBookService.Currencies">
+                                                                                <Annotation Term="UI.Identification">
+                                                                                    <Collection>
+                                                                                        <Record Type="UI.DataField">
+                                                                                            <PropertyValue Property="Value" Path="name"/>
+                                                                                        </Record>
+                                                                                    </Collection>
+                                                                                </Annotation>
+                                                                            </Annotations>
+                                                                            <Annotations Target="OrderBookService.Currencies/name">
+                                                                                <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                </Annotations>
+                                                                                <Annotations Target="OrderBookService.Currencies/descr">
+                                                                                    <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                    </Annotations>
+                                                                                    <Annotations Target="OrderBookService.Currencies/code">
+                                                                                        <Annotation Term="Common.Text" Path="name"/>
+                                                                                        <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                        </Annotations>
+                                                                                        <Annotations Target="OrderBookService.Currencies/symbol">
+                                                                                            <Annotation Term="Common.Label" String="{i18n>CurrencySymbol}"/>
+                                                                                            </Annotations>
+                                                                                            <Annotations Target="OrderBookService.Currencies_texts/locale">
+                                                                                                <Annotation Term="Common.Label" String="{i18n>LanguageCode}"/>
+                                                                                                </Annotations>
+                                                                                                <Annotations Target="OrderBookService.Currencies_texts/name">
+                                                                                                    <Annotation Term="Common.Label" String="{i18n>Name}"/>
+                                                                                                    </Annotations>
+                                                                                                    <Annotations Target="OrderBookService.Currencies_texts/descr">
+                                                                                                        <Annotation Term="Common.Label" String="{i18n>Description}"/>
+                                                                                                        </Annotations>
+                                                                                                        <Annotations Target="OrderBookService.Currencies_texts/code">
+                                                                                                            <Annotation Term="Common.Text" Path="name"/>
+                                                                                                            <Annotation Term="Common.Label" String="{i18n>CurrencyCode}"/>
+                                                                                                            </Annotations>
+                                                                                                        </Schema>
+                                                                                                    </edmx:DataServices>
+                                                                                                </edmx:Edmx>
