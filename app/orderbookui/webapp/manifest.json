@@ -1,146 +1,160 @@
 {
-  "_version": "1.42.0",
-  "sap.app": {
-    "id": "orderbookui",
-    "type": "application",
-    "i18n": "i18n/i18n.properties",
-    "applicationVersion": {
-      "version": "0.0.1"
-    },
-    "title": "{{appTitle}}",
-    "description": "{{appDescription}}",
-    "resources": "resources.json",
-    "sourceTemplate": {
-      "id": "@sap/generator-fiori:lrop",
-      "version": "1.8.3",
-      "toolsId": "3ff60b5c-69f1-4dc4-b779-629138322483"
-    },
-    "dataSources": {
-      "mainService": {
-        "uri": "/order-book/",
-        "type": "OData",
-        "settings": {
-          "annotations": [
-            "annotation"
-          ],
-          "localUri": "localService/metadata.xml",
-          "odataVersion": "4.0"
-        }
-      },
-      "annotation": {
-        "type": "ODataAnnotation",
-        "uri": "annotations/annotation.xml",
-        "settings": {
-          "localUri": "annotations/annotation.xml"
-        }
-      }
-    }
-  },
-  "sap.ui": {
-    "technology": "UI5",
-    "icons": {
-      "icon": "",
-      "favIcon": "",
-      "phone": "",
-      "phone@2": "",
-      "tablet": "",
-      "tablet@2": ""
-    },
-    "deviceTypes": {
-      "desktop": true,
-      "tablet": true,
-      "phone": true
-    }
-  },
-  "sap.ui5": {
-    "flexEnabled": true,
-    "dependencies": {
-      "minUI5Version": "1.102.1",
-      "libs": {
-        "sap.m": {},
-        "sap.ui.core": {},
-        "sap.ushell": {},
-        "sap.fe.templates": {}
-      }
-    },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
-    },
-    "models": {
-      "i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "settings": {
-          "bundleName": "orderbookui.i18n.i18n"
-        }
-      },
-      "": {
-        "dataSource": "mainService",
-        "preload": true,
-        "settings": {
-          "synchronizationMode": "None",
-          "operationMode": "Server",
-          "autoExpandSelect": true,
-          "earlyRequests": true
-        }
-      },
-      "@i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "uri": "i18n/i18n.properties"
-      }
-    },
-    "resources": {
-      "css": []
-    },
-    "routing": {
-      "config": {},
-      "routes": [
-        {
-          "pattern": ":?query:",
-          "name": "BookOrdersList",
-          "target": "BookOrdersList"
+    "_version": "1.42.0",
+    "sap.app": {
+        "id": "orderbookui",
+        "type": "application",
+        "i18n": "i18n/i18n.properties",
+        "applicationVersion": {
+            "version": "0.0.1"
         },
-        {
-          "pattern": "BookOrders({key}):?query:",
-          "name": "BookOrdersObjectPage",
-          "target": "BookOrdersObjectPage"
-        }
-      ],
-      "targets": {
-        "BookOrdersList": {
-          "type": "Component",
-          "id": "BookOrdersList",
-          "name": "sap.fe.templates.ListReport",
-          "options": {
-            "settings": {
-              "entitySet": "BookOrders",
-              "variantManagement": "Page",
-              "navigation": {
-                "BookOrders": {
-                  "detail": {
-                    "route": "BookOrdersObjectPage"
-                  }
+        "title": "{{appTitle}}",
+        "description": "{{appDescription}}",
+        "resources": "resources.json",
+        "sourceTemplate": {
+            "id": "@sap/generator-fiori:lrop",
+            "version": "1.8.3",
+            "toolsId": "3ff60b5c-69f1-4dc4-b779-629138322483"
+        },
+        "dataSources": {
+            "mainService": {
+                "uri": "/order-book/",
+                "type": "OData",
+                "settings": {
+                    "annotations": [
+                        "annotation"
+                    ],
+                    "localUri": "localService/metadata.xml",
+                    "odataVersion": "4.0"
                 }
-              }
+            },
+            "annotation": {
+                "type": "ODataAnnotation",
+                "uri": "annotations/annotation.xml",
+                "settings": {
+                    "localUri": "annotations/annotation.xml"
+                }
             }
-          }
         },
-        "BookOrdersObjectPage": {
-          "type": "Component",
-          "id": "BookOrdersObjectPage",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "editableHeaderContent": false,
-              "entitySet": "BookOrders"
+        "crossNavigation": {
+            "inbounds": {
+                "orderbookui-inbound": {
+                    "signature": {
+                        "parameters": {},
+                        "additionalParameters": "allowed"
+                    },
+                    "semanticObject": "BookOrders",
+                    "action": "manage",
+                    "title": "{{flpTitle}}",
+                    "subTitle": "{{flpSubtitle}}",
+                    "icon": "sap-icon://customer"
+                }
             }
-          }
         }
-      }
+    },
+    "sap.ui": {
+        "technology": "UI5",
+        "icons": {
+            "icon": "",
+            "favIcon": "",
+            "phone": "",
+            "phone@2": "",
+            "tablet": "",
+            "tablet@2": ""
+        },
+        "deviceTypes": {
+            "desktop": true,
+            "tablet": true,
+            "phone": true
+        }
+    },
+    "sap.ui5": {
+        "flexEnabled": true,
+        "dependencies": {
+            "minUI5Version": "1.102.1",
+            "libs": {
+                "sap.m": {},
+                "sap.ui.core": {},
+                "sap.ushell": {},
+                "sap.fe.templates": {}
+            }
+        },
+        "contentDensities": {
+            "compact": true,
+            "cozy": true
+        },
+        "models": {
+            "i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "settings": {
+                    "bundleName": "orderbookui.i18n.i18n"
+                }
+            },
+            "": {
+                "dataSource": "mainService",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "earlyRequests": true
+                }
+            },
+            "@i18n": {
+                "type": "sap.ui.model.resource.ResourceModel",
+                "uri": "i18n/i18n.properties"
+            }
+        },
+        "resources": {
+            "css": []
+        },
+        "routing": {
+            "routes": [
+                {
+                    "pattern": ":?query:",
+                    "name": "BookOrdersList",
+                    "target": "BookOrdersList"
+                },
+                {
+                    "pattern": "BookOrders({key}):?query:",
+                    "name": "BookOrdersObjectPage",
+                    "target": "BookOrdersObjectPage"
+                }
+            ],
+            "targets": {
+                "BookOrdersList": {
+                    "type": "Component",
+                    "id": "BookOrdersList",
+                    "name": "sap.fe.templates.ListReport",
+                    "options": {
+                        "settings": {
+                            "entitySet": "BookOrders",
+                            "variantManagement": "Page",
+                            "navigation": {
+                                "BookOrders": {
+                                    "detail": {
+                                        "route": "BookOrdersObjectPage"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "BookOrdersObjectPage": {
+                    "type": "Component",
+                    "id": "BookOrdersObjectPage",
+                    "name": "sap.fe.templates.ObjectPage",
+                    "options": {
+                        "settings": {
+                            "editableHeaderContent": false,
+                            "entitySet": "BookOrders"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "sap.fiori": {
+        "registrationIds": [],
+        "archeType": "transactional"
     }
-  },
-  "sap.fiori": {
-    "registrationIds": [],
-    "archeType": "transactional"
-  }
 }
