@@ -1,6 +1,6 @@
 const csd = require('@sap/cds');
-const cpi = require('./cpi');
-const wf = require('./wf');
+//const cpi = require('./cpi');
+//const wf = require('./wf');
 
 module.exports = cds.service.impl(async function() {
     let { BookOrders } = this.entities;
@@ -10,6 +10,8 @@ module.exports = cds.service.impl(async function() {
         req.data.bookOrderID = maxID + 1;
     });
 
+    /*
     this.on('approveBook', 'BookOrders', wf.approveBook);
     this.on('sendBook', 'BookOrders', cpi.sendBook);
+    */
 })
