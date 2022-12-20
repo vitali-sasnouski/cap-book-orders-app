@@ -1,0 +1,2 @@
+orderUUID;bookUUID;bookOrderID;bookName;authorUUID;authorfirstName;authorlastName;CurrencyCode_code;LocalCurrencyCode_code;price;quantity;status_ID;totalPrice;totalLocal
+32ca5208-698d-4d7a-1524-003ef21b6348;32ca5208-698d-4d7a-9db9-003ef21b6222;1;"The Raven";32ca5208-698d-4d7a-1524-003ef21b6347;Richard;Carpenter;USD;BYN;30;2;1;60;150

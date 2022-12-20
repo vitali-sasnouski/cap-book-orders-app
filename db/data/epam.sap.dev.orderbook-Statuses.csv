@@ -1,0 +1,6 @@
+ID,name,criticality
+1,Opened,3
+2,Closed,2
+3,Sent,4
+4,Rejected,1
+5,Sent to Approve,4
