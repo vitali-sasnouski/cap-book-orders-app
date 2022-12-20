@@ -47,6 +47,36 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+- name: cap-book-orders-app-destination-content
+  type: com.sap.application.content
+  requires:
+  - name: cap-book-orders-app-destination-service
+    parameters:
+      content-target: true
+  - name: cap-book-orders-app-repo-host
+    parameters:
+      service-key:
+        name: cap-book-orders-app-repo-host-key
+  - name: cap-book-orders-app-auth
+    parameters:
+      service-key:
+        name: cap-book-orders-app-auth-key
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: bookorder_cap_book_orders_app_repo_host
+          ServiceInstanceName: cap-book-orders-app-html5-srv
+          ServiceKeyName: cap-book-orders-app-repo-host-key
+          sap.cloud.service: bookorder
+        - Authentication: OAuth2UserTokenExchange
+          Name: bookorder_cap_book_orders_app_auth
+          ServiceInstanceName: cap-book-orders-app-xsuaa-service
+          ServiceKeyName: cap-book-orders-app-auth-key
+          sap.cloud.service: bookorder
+        existing_destinations_policy: ignore
+  build-parameters:
+    no-source: true
 resources:
 - name: cap-book-orders-app-db
   type: com.sap.xs.hdi-container
@@ -72,16 +102,7 @@ resources:
   type: org.cloudfoundry.managed-service
   parameters:
     config:
-      HTML5Runtime_enabled: false
-      init_data:
-        instance:
-          destinations:
-          - Authentication: NoAuthentication
-            Name: ui5
-            ProxyType: Internet
-            Type: HTTP
-            URL: https://ui5.sap.com
-          existing_destinations_policy: update
+      HTML5Runtime_enabled: true
       version: 1.0.0
     service: destination
     service-name: cap-book-orders-app-destination-service
