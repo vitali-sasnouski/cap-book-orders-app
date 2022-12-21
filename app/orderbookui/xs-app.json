@@ -3,6 +3,12 @@
   "authenticationMethod": "route",
   "routes": [
     {
+      "authenticationType": "none",
+      "csrfProtection": false,
+      "source": "/order-book/(.*)",
+      "destination": "cap-order-book-api"
+    },    
+    {
       "source": "^/resources/(.*)$",
       "target": "/resources/$1",
       "authenticationType": "none",
