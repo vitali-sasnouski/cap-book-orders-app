@@ -2,14 +2,15 @@
 _out
 *.db
 *.sqlite
-*.zip
 connection.properties
 default-*.json
 .cdsrc-private.json
 gen/
 node_modules/
 target/
+
 dist/
+resources/
 
 # Web IDE, App Studio
 .che/
