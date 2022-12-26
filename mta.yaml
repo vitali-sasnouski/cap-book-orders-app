@@ -8,6 +8,7 @@ modules:
   path: gen/srv
   requires:
   - name: cap-book-orders-app-db
+  - name: cap-book-orders-app-auth
   provides:
   - name: srv-api
     properties:
@@ -61,6 +62,7 @@ modules:
     parameters:
       service-key:
         name: cap-book-orders-app-auth-key
+  - name: srv-api
   parameters:
     content:
       instance:
@@ -74,6 +76,12 @@ modules:
           ServiceInstanceName: cap-book-orders-app-xsuaa-service
           ServiceKeyName: cap-book-orders-app-auth-key
           sap.cloud.service: bookorder
+        - Authentication: OAuth2UserTokenExchange
+          Name: cap-order-book-api # choose name for record, then you need to use it in xs-app.json files in Fiori applications
+          TokenServiceInstanceName: cap-book-orders-app-xsuaa-service # name of uaa_... service with org.cloudfoundry.managed-service type
+          TokenServiceKeyName: cap-book-orders-app-auth-key # name of the uaa key that was declared in ...destination-content section, path: requires-> section which name started with 'uaa'->parameters->service-key
+          URL: ~{srv-api/srv-url} # first part of uri provided in ...-srv section with nodejs type, second part is the property of the srv-api 
+          sap.cloud.service: bookorder          
         existing_destinations_policy: ignore
   build-parameters:
     no-source: true
@@ -113,13 +121,6 @@ resources:
             ProxyType: Internet
             Type: HTTP
             URL: https://ui5.sap.com
-          - Authentication: NoAuthentication
-            Name: cap-order-book-api
-            ProxyType: Internet
-            Type: HTTP
-            URL: ~{srv-api/srv-url}
-            HTML5.DynamicDestination: true
-            HTML5.ForwardAuthToken: true             
           existing_destinations_policy: update
       version: 1.0.0
     service: destination

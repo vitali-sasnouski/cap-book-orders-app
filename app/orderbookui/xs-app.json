@@ -3,8 +3,8 @@
   "authenticationMethod": "route",
   "routes": [
     {
-      "authenticationType": "none",
-      "csrfProtection": false,
+      "authenticationType": "xsuaa",
+      "csrfProtection": true,
       "source": "/order-book/(.*)",
       "destination": "cap-order-book-api"
     },    
