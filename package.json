@@ -58,6 +58,12 @@
                 "db": {
                     "kind": "hana-cloud"
                 },
+                "workflowService": {
+                    "kind": "rest",
+                    "credentials": {
+                      "destination": "WORKFLOW_APPROVE_BOOK_ORDER"
+                    }
+                },    
                 "auth": {
                     "kind": "xsuaa"
                 }
